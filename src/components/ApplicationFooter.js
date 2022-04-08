@@ -12,8 +12,8 @@ export default function ApplicationFooter() {
             </Typography>
             <Typography variant="body2" color="text.secondary" align="center">
                 {"Copyright © "}
-                <LinkNewTab underline="always" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                    F1Timer
+                <LinkNewTab underline="always" href="https://sergiosino.github.io/SimpleCardsGame/">
+                    Website
                 </LinkNewTab>
                 {` ${new Date().getFullYear()}.`}
             </Typography>
