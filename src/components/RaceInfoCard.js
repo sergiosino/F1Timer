@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import LinkNewTab from './LinkNewTab';
 import MomentLocal from './MomentLocal';
+import Moment from 'react-moment';
 
 function PreRaceInfoCard(props) {
     const { title, date, time } = props;
@@ -30,13 +31,34 @@ export default function RaceInfoCard(props) {
         return new Date(race.date) < new Date();
     }
 
+    function handleTimerChange() {
+        if (document.getElementById(race.Circuit.circuitId).innerText.charAt(0).toString() === "-") {
+            document.getElementById(race.Circuit.circuitId).innerText = document.getElementById(race.Circuit.circuitId).innerText.substring(1);
+        }
+    }
+
     return (
         <Card style={{ borderLeft: pastRace() ? "3px solid lightgreen" : "none" }}>
             <CardContent>
                 <Grid container spacing={1}>
                     <Grid item container xs={12} spacing={1}>
                         <Grid item xs={12} sm={6} lg={8}>
-                            <LinkNewTab href={race.url} variant="h5">{race.raceName}</LinkNewTab>
+                            <LinkNewTab href={race.url} variant="h5">
+                                {race.raceName}
+                                {
+                                    pastRace() ? "" :
+                                        <>
+                                            {" "}
+                                            <Moment
+                                                id={race.Circuit.circuitId}
+                                                onChange={handleTimerChange}
+                                                interval={1000}
+                                                date={`${race.date}T${race.time}`}
+                                                format="HH:mm:ss"
+                                                durationFromNow />
+                                        </>
+                                }
+                            </LinkNewTab>
                             <Typography variant="subtitle1" component="div">
                                 Race date: <MomentLocal date={race.date} time={race.time} />
                             </Typography>
