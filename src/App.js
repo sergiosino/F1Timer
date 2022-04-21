@@ -28,7 +28,8 @@ function App() {
     for (let race in races) {
       if (new Date(races[race].date) > new Date()) {
         setNextRace(races[race]);
-        document.getElementById(`${races[race].Circuit.circuitId}-raceInfoCard`).scrollIntoView()
+        document.getElementById(`${races[race].Circuit.circuitId}-raceInfoCard`).scrollIntoView();
+        console.log(document.getElementById(`${races[race].Circuit.circuitId}-raceInfoCard`).offsetTop)
         break;
       }
     }
