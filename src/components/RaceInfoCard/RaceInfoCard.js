@@ -36,7 +36,7 @@ export default function RaceInfoCard(props) {
 
     function GetQualifyingResult() {
         axios.get(`https://ergast.com/api/f1/${year}/${race.round}/qualifying.json`).then(response => {
-            setQualyResults(response.data.MRData.RaceTable.Races[0].QualifyingResults);
+            setQualyResults(response.data?.MRData?.RaceTable?.Races[0].QualifyingResults);
         }).catch(ex => {
             console.log(ex);
         });
@@ -44,14 +44,14 @@ export default function RaceInfoCard(props) {
 
     function GetRaceResult() {
         axios.get(`https://ergast.com/api/f1/${year}/${race.round}/results.json`).then(response => {
-            setRaceResults(response.data.MRData.RaceTable.Races[0].Results);
+            setRaceResults(response.data?.MRData?.RaceTable?.Races[0].Results);
         }).catch(ex => {
             console.log(ex);
         });
     }
 
     return (
-        <Card style={{ backgroundColor: "#E7EBF0" }}>
+        <Card sx={{ backgroundColor: "#E7EBF0" }}>
             <CardContent>
                 <Grid container spacing={1}>
                     {/* Header with race name, date and other info */}
@@ -60,7 +60,7 @@ export default function RaceInfoCard(props) {
                     <PreRaceInfo race={race} />
                 </Grid>
             </CardContent>
-            <CardContent style={{ paddingTop: 0 }}>
+            <CardContent sx={{ paddingTop: 0 }}>
                 <Accordion expanded={expanded === 'qualy'} onChange={handleChange('qualy')} TransitionProps={{ unmountOnExit: true }}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="subtitle1">
@@ -78,9 +78,7 @@ export default function RaceInfoCard(props) {
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>
-                            {raceResults ? <ResultsTable rows={raceResults} columns={raceTableCols} isRaceResults /> : "No results yet"}
-                        </Typography>
+                        {raceResults ? <ResultsTable rows={raceResults} columns={raceTableCols} isRaceResults /> : "No results yet"}
                     </AccordionDetails>
                 </Accordion>
             </CardContent>

@@ -11,7 +11,7 @@ function PreRaceInfoCard(props) {
 
     return (
         <Card>
-            <CardContent style={{ paddingBottom: 16 }}>
+            <CardContent sx={{ paddingBottom: 16 }}>
                 <Typography align="center" variant="subtitle1">{title}</Typography>
                 <Divider variant="middle" />
                 <Typography align="center" variant="subtitle1" component="div">

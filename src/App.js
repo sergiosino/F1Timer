@@ -7,6 +7,9 @@ import RaceInfoCard from './components/RaceInfoCard/RaceInfoCard';
 import ApplicationBar from './components/ApplicationBar';
 import ApplicationFooter from './components/ApplicationFooter';
 import { raceStatusEnum } from "./constants/Enums";
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme/Theme';
+import ToggleColorMode from './contexts/ToggleColorMode';
 
 function App() {
 
@@ -18,7 +21,6 @@ function App() {
   function GetRacesInfo() {
     axios.get(`https://ergast.com/api/f1/${year}.json`).then(response => {
       setRaces(response.data.MRData.RaceTable.Races);
-      console.log(response.data.MRData.RaceTable);
     }).catch(ex => {
       console.log(ex);
     });
@@ -26,17 +28,16 @@ function App() {
 
   function GetNextRace() {
     for (let race in races) {
-      if (new Date(races[race].date) > new Date()) {
+      if (new Date(races[race].date) > new Date().setHours(new Date().getHours() + 3)) {
         setNextRace(races[race]);
         document.getElementById(`${races[race].Circuit.circuitId}-raceInfoCard`).scrollIntoView();
-        console.log(document.getElementById(`${races[race].Circuit.circuitId}-raceInfoCard`).offsetTop)
         break;
       }
     }
   }
 
   function GetRaceStatus(race) {
-    if (new Date(race.date) > new Date()) {
+    if (new Date(race.date) > new Date().setHours(new Date().getHours() + 3)) {
       if (!nextRaceFound) {
         nextRaceFound = true;
         return raceStatusEnum.next;
@@ -56,18 +57,20 @@ function App() {
 
   return (
     <>
-      <CssBaseline />
-      <ApplicationBar nextRace={nextRace} />
-      <Container fixed>
-        <Grid container spacing={3}>
-          {races.map((race) =>
-            <Grid id={`${race.Circuit.circuitId}-raceInfoCard`} key={race.Circuit.circuitId} item xs={12} style={{ scrollMargin: 100 }}>
-              <RaceInfoCard race={race} raceStatus={GetRaceStatus(race)} year={year} />
-            </Grid>
-          )}
-        </Grid>
-      </Container>
-      <ApplicationFooter />
+      <ToggleColorMode>
+        <CssBaseline />
+        <ApplicationBar nextRace={nextRace} />
+        <Container fixed>
+          <Grid container spacing={3}>
+            {races.map((race) =>
+              <Grid id={`${race.Circuit.circuitId}-raceInfoCard`} key={race.Circuit.circuitId} item xs={12} sx={{ scrollMargin: 100 }}>
+                <RaceInfoCard race={race} raceStatus={GetRaceStatus(race)} year={year} />
+              </Grid>
+            )}
+          </Grid>
+        </Container>
+        <ApplicationFooter />
+      </ToggleColorMode>
     </>
   );
 }
