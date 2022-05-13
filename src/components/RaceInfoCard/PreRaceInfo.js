@@ -1,75 +1,71 @@
 import * as React from 'react';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
-import MomentLocal from '../MomentLocal';
-
-function PreRaceInfoCard(props) {
-    const { title, date, time } = props;
-
-    return (
-        <Card>
-            <CardContent sx={{ paddingBottom: 16 }}>
-                <Typography align="center" variant="subtitle1">{title}</Typography>
-                <Divider variant="middle" />
-                <Typography align="center" variant="subtitle1" component="div">
-                    <MomentLocal date={date} time={time} />
-                </Typography>
-            </CardContent>
-        </Card>
-    );
-}
+import { Typography, Card, CardContent, Divider, Grid } from '../../utils/muiImports';
+import { formatDatePretty } from '../../utils/formatDate';
 
 export default function PreRaceInfo(props) {
     const { race } = props;
 
-    function raceWithSprint() {
+    const preRaceInfoCard = (title, date, time) => {
+        return (
+            <Card>
+                <CardContent sx={{ paddingBottom: 16 }}>
+                    <Typography align="center" variant="subtitle1">{title}</Typography>
+                    <Divider variant="middle" />
+                    <Typography align="center" variant="subtitle1" component="div">
+                        {formatDatePretty(new Date(`${date}T${time}`))}
+                    </Typography>
+                </CardContent>
+            </Card>
+        );
+    }
+
+    const firstPractice = () => {
+        return preRaceInfoCard("First practice", race.FirstPractice?.date, race.FirstPractice?.time);
+    }
+
+    const secondPractice = () => {
+        return preRaceInfoCard("Second practice", race.SecondPractice?.date, race.SecondPractice?.time);
+    }
+
+    const thirdPractice = () => {
+        return preRaceInfoCard("Third practice", race.ThirdPractice?.date, race.ThirdPractice?.time);
+    }
+
+    const qualifying = () => {
+        return preRaceInfoCard("Qualifying", race.Qualifying?.date, race.Qualifying?.time);
+    }
+
+    const sprint = () => {
+        return preRaceInfoCard("Sprint", race.Sprint?.date, race.Sprint?.time);
+    }
+
+    const raceWithSprint = () => {
         return (
             <>
                 <Grid item xs={12} sm={6} md={3}>
-                    <PreRaceInfoCard
-                        title="Qualifying"
-                        date={race.Qualifying?.date}
-                        time={race.Qualifying?.time} />
+                    {qualifying()}
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                    <PreRaceInfoCard
-                        title="Second practice"
-                        date={race.SecondPractice?.date}
-                        time={race.SecondPractice?.time} />
+                    {secondPractice()}
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                    <PreRaceInfoCard
-                        title="Sprint"
-                        date={race.Sprint?.date}
-                        time={race.Sprint?.time} />
+                    {sprint()}
                 </Grid>
             </>
         );
     }
 
-    function raceWithoutSprint() {
+    const raceWithoutSprint = () => {
         return (
             <>
                 <Grid item xs={12} sm={6} md={3}>
-                    <PreRaceInfoCard
-                        title="Second practice"
-                        date={race.SecondPractice?.date}
-                        time={race.SecondPractice?.time} />
+                    {secondPractice()}
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                    <PreRaceInfoCard
-                        title="Third practice"
-                        date={race.ThirdPractice?.date}
-                        time={race.ThirdPractice?.time} />
+                    {thirdPractice()}
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                    <PreRaceInfoCard
-                        title="Qualifying"
-                        date={race.Qualifying?.date}
-                        time={race.Qualifying?.time} />
+                    {qualifying()}
                 </Grid>
             </>
         );
@@ -78,10 +74,7 @@ export default function PreRaceInfo(props) {
     return (
         <Grid item container xs={12} spacing={1}>
             <Grid item xs={12} sm={6} md={3}>
-                <PreRaceInfoCard
-                    title="First practice"
-                    date={race.FirstPractice?.date}
-                    time={race.FirstPractice?.time} />
+                {firstPractice()}
             </Grid>
             {race.Sprint ? raceWithSprint() : raceWithoutSprint()}
         </Grid>

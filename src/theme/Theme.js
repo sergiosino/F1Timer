@@ -1,25 +1,27 @@
-import { createTheme } from '@mui/material/styles';
 
-// const theme = createTheme({
-//     palette: {
-//         mode: 'light',
-//     },
-// });
+const getDesignTheme = (mode) => {
+    return {
+        palette: {
+            mode,
+            ...(mode === 'light' ? lightTheme : darkTheme),
+        },
+    }
+};
 
-const theme = createTheme({
-    palette: {
-        mode: 'light',
-        primary: {
-            main: '#711010',
-        },
-        secondary: {
-            main: '#060606',
-        },
-        background: {
-            default: '#FFFFFF',
-            paper: '#fff8f8',
-        },
+const lightTheme = {
+    primary: {
+        main: '#711010',
     },
-});
+    secondary: {
+        main: '#060606',
+    },
+    background: {
+        default: '#FFFFFF',
+        paper: '#fff',
+    },
+};
 
-export default theme;
+const darkTheme = {
+}
+
+export default getDesignTheme;

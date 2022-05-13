@@ -1,24 +1,10 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Moment from 'react-moment';
-import MenuIcon from '@mui/icons-material/Menu';
-import IconButton from '@mui/material/IconButton';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { ColorModeContext } from '../contexts/ToggleColorMode';
-import { useTheme } from '@mui/material/styles';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Countdown from "react-countdown";
+import {
+    AppBar, Box, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, Toolbar, Typography, useTheme,
+    Brightness4Icon, Brightness7Icon, InboxIcon, MailIcon, MenuIcon
+} from '../utils/muiImports';
+import { ColorModeContext } from '../contexts/ToggleColorMode';
 
 export default function ApplicationBar(props) {
     const { nextRace } = props;
@@ -34,7 +20,7 @@ export default function ApplicationBar(props) {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}>
             <List>
-                {['Race', 'Race', 'Race', 'Race'].map((text, index) => (
+                {['Race1', 'Race2', 'Race3', 'Race4'].map((text, index) => (
                     <ListItem button key={text}>
                         <ListItemIcon>
                             {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -45,7 +31,7 @@ export default function ApplicationBar(props) {
             </List>
             <Divider />
             <List>
-                {['Drivers', 'Drivers', 'Drivers'].map((text, index) => (
+                {['Drivers1', 'Drivers2', 'Drivers3'].map((text, index) => (
                     <ListItem button key={text}>
                         <ListItemIcon>
                             {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -63,9 +49,8 @@ export default function ApplicationBar(props) {
 
     const nextRaceDate = () => {
         const raceDate = new Date(`${nextRace.date}T${nextRace.time}`);
-        const hoursDiff = Math.abs(raceDate.getTime() - new Date().getTime()) / 3600000;
-
-        if (hoursDiff < 0) {
+        const diff = raceDate.getTime() - new Date().getTime();
+        if (diff < 0) {
             return "Next: Now!";
         } else {
             return (
@@ -93,13 +78,6 @@ export default function ApplicationBar(props) {
                     </Typography>
                     <Typography variant="h6" component="div">
                         {nextRace && nextRaceDate()}
-                        {/* <Moment
-                                id={"nextRaceTimer"}
-                                onChange={handleTimerChange}
-                                interval={1000}
-                                date={`${nextRace.date}T${nextRace.time}`}
-                                format="HH:mm:ss"
-                                durationFromNow />} */}
                     </Typography>
                     <IconButton
                         color="inherit"
@@ -117,7 +95,7 @@ export default function ApplicationBar(props) {
                 onOpen={toggleDrawer(true)}>
                 {list()}
             </SwipeableDrawer>
-            <div sx={{ height: 70 }} />
+            <Box style={{ height: 70 }} />
         </>
     );
 }

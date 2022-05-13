@@ -1,13 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Grid from '@mui/material/Grid';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
+import {
+    Typography, Card, CardContent, Grid, ExpandMoreIcon, Accordion, AccordionDetails, AccordionSummary
+} from '../../utils/muiImports';
 import PreRaceInfo from './PreRaceInfo';
 import HeaderRaceInfo from './HeaderRaceInfo';
 import ResultsTable from "../ResultsTable";
@@ -26,15 +21,15 @@ export default function RaceInfoCard(props) {
             setQualyResults(null);
             setRaceResults(null);
         } else if (panel === "qualy") {
-            GetQualifyingResult();
+            getQualifyingResult();
             setRaceResults(null);
         } else {
-            GetRaceResult();
+            getRaceResult();
             setQualyResults(null);
         }
     }
 
-    function GetQualifyingResult() {
+    const getQualifyingResult = () => {
         axios.get(`https://ergast.com/api/f1/${year}/${race.round}/qualifying.json`).then(response => {
             setQualyResults(response.data?.MRData?.RaceTable?.Races[0].QualifyingResults);
         }).catch(ex => {
@@ -42,7 +37,7 @@ export default function RaceInfoCard(props) {
         });
     }
 
-    function GetRaceResult() {
+    const getRaceResult = () => {
         axios.get(`https://ergast.com/api/f1/${year}/${race.round}/results.json`).then(response => {
             setRaceResults(response.data?.MRData?.RaceTable?.Races[0].Results);
         }).catch(ex => {
@@ -51,7 +46,7 @@ export default function RaceInfoCard(props) {
     }
 
     return (
-        <Card sx={{ backgroundColor: "#E7EBF0" }}>
+        <Card elevation={8}>
             <CardContent>
                 <Grid container spacing={1}>
                     {/* Header with race name, date and other info */}

@@ -1,4 +1,4 @@
-import Link from '@mui/material/Link';
+import { Link } from '../utils/muiImports';
 
 export default function LinkNewTab(props) {
     const { href, children, variant = "body2", underline = "hover" } = props;
